@@ -1,0 +1,33 @@
+server:
+  port: 7000
+  servlet:
+    context-path: /ad-sponsor
+
+spring:
+  application:
+    name: eureka-client-ad-sponsor
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate.format_sql: true
+    open-in-view: false
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/imooc_ad_data?autoReconnect=true&useUnicode=true&characterEncoding=utf8&useSSL=false
+    username: root
+    password: Djangobbs
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    tomcat:
+      max-active: 4
+      min-idle: 2
+      initial-size: 2
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://qinyi:123456@server1:8000/eureka/   # Eureka 有密码, 则注册的时候也需要提供
+
+logging:
+  config: classpath:logback.xml
+  file: ad-sponsor.log

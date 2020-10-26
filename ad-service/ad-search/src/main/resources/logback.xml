@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <appender name="system"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>./logs/ad-search.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>./logs/ad-search.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>5</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>[%d{yyyy-MM-dd HH:mm:ss:SSS}] %thread %level %logger{36} %L - %msg%n</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>[%d{yyyy-MM-dd HH:mm:ss:SSS}] %thread %level %logger{36} %L - %msg%n</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <logger name="com.imooc.ad" level="info" additivity="false">
+        <appender-ref ref="stdout"/>
+        <appender-ref ref="system"/>
+    </logger>
+
+    <logger name="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping" level="info"
+            additivity="false">
+        <appender-ref ref="stdout"/>
+    </logger>
+
+    <logger name="org.springframework.orm.jpa.JpaTransactionManager" level="debug"
+            additivity="false">
+        <appender-ref ref="stdout"/>
+    </logger>
+
+    <logger name="org.hibernate.type.descriptor.sql.BasicBinder" level="trace"
+            additivity="false">
+        <appender-ref ref="stdout"/>
+    </logger>
+
+    <root level="warn">
+        <appender-ref ref="stdout"/>
+    </root>
+</configuration>
