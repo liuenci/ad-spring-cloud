@@ -1,0 +1,106 @@
+@startuml
+!define TABLE(name) class name << (T,#FFAAAA) >>
+!define CLASS(name) class name << (C,#FFAAAA) >>
+' {#-+}{field：字段名} {type：字段类型} {default_value：字段默认值} {comment：字段说明}
+' gender char(1) '0' --性别
+
+' # 表示该字段为主键
+' - 表示该字段非空
+' + 表示该字段要创建索引
+' VARCHAR/VARCHAR2 可以简写为 VC
+' CHAR 可以简写为 CR
+' Datetime/Date 可以简写为 DT
+' NUMBER 可以简写为 NUM
+' TEXT/CLOB 可以简写为 TEXT
+' IDX_XXX 表示创建聚合索引XXX
+package 广告模块ER图{
+    TABLE(ad_user) {
+        用户表
+        ==
+        #id bigint(20) --自增主键
+        -username varchar(128) --用户名
+        -token varchar(256) --给用户生成的 token
+        -user_status tinyint(4)  DEFAULT '0' --用户状态
+        -create_time datetime  DEFAULT '1970-01-01 00:00:00' --创建时间
+        -update_time datetime  DEFAULT '1970-01-01 00:00:00' --更新时间
+
+    }
+    TABLE(ad_plan) {
+        推广计划表
+        ==
+        #id bigint(20) --自增主键
+        -user_id bigint(20) DEFAULT '0' --标记当前记录所属用户
+        -plan_name varchar(48) --推广计划名称
+        -plan_status tinyint(4) DEFAULT '0' --推广计划状态
+        -start_date datetime --推广计划开始时间
+        -end_date datetime --推广计划结束时间
+        -create_time datetime DEFAULT '1970-01-01 00:00:00' --创建时间
+        -update_time datetime DEFAULT '1970-01-01 00:00:00' --更新时间
+    }
+    TABLE(ad_unit) {
+        推广单元表
+        ==
+        #id bigint(20) --自增主键
+        -plan_id bigint(20) DEFAULT '0' --关联推广计划 id
+        -unit_name varchar(48) --推广单元名称
+        -unit_status tinyint(4) DEFAULT '0' --推广单元状态
+        -position_type tinyint(4) DEFAULT '0' --广告位类型(开屏, 贴片, 中贴, 暂停帖, 后贴)
+        -budget bigint(20) --预算
+        -create_time datetime DEFAULT '1970-01-01 00:00:00' --创建时间
+        -update_time datetime DEFAULT '1970-01-01 00:00:00' --更新时间
+    }
+    TABLE(ad_creative) {
+        创意表
+        ==
+        #id bigint(20) --自增主键
+        -name varchar(48) --创意名称
+        -type tinyint(4) DEFAULT '0' --物料类型(图片, 视频)
+        -material_type tinyint(4) DEFAULT '0' --物料子类型(图片: bmp, jpg 等等)
+        -height int(10) DEFAULT '0' --高度
+        -width int(10) DEFAULT '0' --宽度
+        -size bigint(20) DEFAULT '0' --物料大小, 单位是 KB
+        -duration int(10) DEFAULT '0' --持续时长, 只有视频才不为 0
+        -audit_status tinyint(4) DEFAULT '0' --'审核状态'
+        -user_id bigint(20) DEFAULT '0' --标记当前记录所属用户
+        -url varchar(256) --物料地址
+        -create_time datetime DEFAULT '1970-01-01 00:00:00' --创建时间
+        -update_time datetime DEFAULT '1970-01-01 00:00:00' --更新时间
+    }
+    TABLE(creative_unit) {
+        创意与推广单元的关联表
+        ==
+        #id bigint(20) --主键ID,
+        -creative_id bigint(20) DEFAULT '0' --创意 id
+        -unit_id bigint(20) DEFAULT '0' --推广单元 id
+    }
+    TABLE(ad_unit_keyword) {
+        推广单元关键词 Feature
+        ==
+        #id int(11) --主键ID,
+        -unit_id int(11) --推广单元 id
+        -keyword varchar(30) --关键词
+    }
+    TABLE(ad_unit_it) {
+        推广单元兴趣 Feature
+        ==
+        #id int(11) --主键ID
+        -unit_id int(11) --推广单元 id
+        -it_tag varchar(30) --兴趣标签
+    }
+    TABLE(ad_unit_district) {
+        推广单元地域 Feature
+        ==
+        #id int(11) --主键ID,
+        -unit_id int(11) --推广单元 id
+        -province varchar(30) --省
+        -city varchar(30) --市
+    }
+}
+ad_user "1"-- "*" ad_plan
+ad_plan "1"-- "*" ad_unit
+ad_unit "*"-- "1" creative_unit
+creative_unit "1"-- "*" ad_creative
+ad_unit "1"-- "*" ad_unit_keyword
+ad_unit "1"-- "*" ad_unit_it
+ad_unit "1"-- "*" ad_unit_district
+@enduml

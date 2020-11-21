@@ -23,7 +23,7 @@ eureka:
 
 
 
-# 配置不同的 Profile, 需要注意, 如果要执行下面的 Profile, 需要将上面的配置注释掉
+# 配置不同的 Profile, 需要注意, 如果要执行下面的 Profile, 需要将上面的配置注释掉 --- 代表SpringBoot的分隔符
 
 ---
 spring:
@@ -35,7 +35,7 @@ server:
 eureka:
   instance:
     hostname: server1
-    prefer-ip-address: false
+    prefer-ip-address: false # 是否通过ip地址进行注册,由于是一台机器,ip地址是一致的,部署会失败
   client:
     service-url:
       defaultZone: http://server2:8001/eureka/,http://server3:8002/eureka/
