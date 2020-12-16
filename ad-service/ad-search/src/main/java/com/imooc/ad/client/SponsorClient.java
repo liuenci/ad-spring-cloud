@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import java.util.List;
 
 /**
+ * <h2>value:应用名 fallback:熔断</h2>
  * Created by Qinyi.
  */
 @FeignClient(value = "eureka-client-ad-sponsor",

@@ -13,6 +13,7 @@ import java.io.IOException;
 
 /**
  * <h1>在过滤器中存储客户端发起请求的时间戳</h1>
+ * <h2>zuul由filter责任链构成，zuul具有丰富的filter</h2>
  * Created by Qinyi.
  */
 @Slf4j
@@ -22,12 +23,13 @@ public class PreRequestFilter extends ZuulFilter {
     @Override
     public String filterType() {
 
-        // 过滤器的类型
+        // 过滤器的类型 鉴权、限流可以考虑在此实现
         return FilterConstants.PRE_TYPE;
     }
 
     @Override
     public int filterOrder() {
+        // 过滤的顺序 数值越小优先级越高
         return 0;
     }
 
